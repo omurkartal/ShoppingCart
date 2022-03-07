@@ -1,12 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="util" tagdir="/WEB-INF/tags" %>
+<%@ page isELIgnored="false" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="messages"/>
 
 <!DOCTYPE html>
-<html">
+<html lang="${language}">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Online Shopping App</title>
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -21,7 +26,7 @@
 <div class="container" role="main">
     <div class="panel panel-success">
         <div class="panel-heading">
-            <h3 class="panel-title">Product Types</h3>
+            <h3 class="panel-title"><fmt:message key="label.product_types" /></h3>
         </div>
         <div class="panel-body">
             <c:url var="actionUrl" value="/api/v1/productList"/>
@@ -60,7 +65,13 @@
                             </td>
                             <td>${item.name}</td>
                             <td><fmt:formatNumber value="${item.price}" type="currency"/></td>
-                            <td><a href = "<c:url value = "/api/v1/cartList/addProductToCart/${item.code}"/>">Buy</a></td>
+                            <td>
+                                <c:url var="form_cart_list" value="/api/v1/cartList"/>
+                                <form method="POST" action="${form_cart_list}">
+                                    <input type="hidden" name="productCode" value="${item.code}" />
+                                    <button name="addProductToCart" type="addProductToCart" class="btn-link">Buy</button>
+                                </form>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>

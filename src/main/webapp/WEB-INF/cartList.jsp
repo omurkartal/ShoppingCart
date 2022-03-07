@@ -1,13 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="util" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page isELIgnored="false" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="messages"/>
 
 <!DOCTYPE html>
-<html>
+<html lang="${language}">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Online Shopping App</title>
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -23,10 +28,10 @@
     <c:if test="${not empty cartInfoList.cartList}">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title">My Cart [${cartInfoList.uuid}]</h3>
+                <h3 class="panel-title"><fmt:message key="label.my_cart" /> [${cartInfoList.uuid}]</h3>
             </div>
             <div class="panel-body">
-                <c:url var="form_url" value="/api/v1/cartList/formAction"/>
+                <c:url var="form_url" value="/api/v1/cartList"/>
                 <form:form method="POST" action="${form_url}" modelAttribute="cartInfoList">
 
                 <table class="table table-striped table-responsive table-hover">
@@ -52,7 +57,10 @@
                             </td>
                             <td><fmt:formatNumber value="${item.subTotal}" type="currency"/></td>
                             <td>
-                                <a href = "<c:url value="/api/v1/cartList/removeProductFromCart/${item.product.code}"/>">Delete</a>
+                                <form method="POST" action="${form_url}">
+                                    <input type="hidden" name="productCode" value="${item.product.code}" />
+                                    <button name="removeProductFromCart" type="removeProductFromCart" class="btn-link">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>

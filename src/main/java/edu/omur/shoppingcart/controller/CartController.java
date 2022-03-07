@@ -29,46 +29,46 @@ public class CartController {
         return MVC_VIEW_NAME;
     }
 
-    @GetMapping("/addProductToCart/{productCode}")
-    public String addProductToCart(Model model, @PathVariable String productCode) {
+    @PostMapping(params = "addProductToCart")
+    public String addProductToCart(Model model, @RequestParam String productCode) {
         ServiceResponse serviceResponse = cartService.addProductToCart(productCode);
         addErrorMessageToModelIfExist(model, serviceResponse);
         return MVC_VIEW_NAME;
     }
 
-    @GetMapping("/removeProductFromCart/{productCode}")
-    public String removeProductFromCart(@PathVariable String productCode) {
+    @PostMapping(params = "removeProductFromCart")
+    public String removeProductFromCart(@RequestParam String productCode) {
         cartService.removeProductFromCart(productCode);
         return MVC_VIEW_NAME;
     }
 
-    @PostMapping(value = "/formAction", params = "clearList")
+    @PostMapping(params = "clearList")
     public String clearList(@ModelAttribute("cartInfoList") CartInfoList cartInfoList) {
         cartService.clearList();
         return MVC_VIEW_NAME;
     }
 
-    @PostMapping(value = "/formAction", params = "updateQuantities")
+    @PostMapping(params = "updateQuantities")
     public String updateQuantities(Model model, @ModelAttribute("cartInfoList") CartInfoList cartInfoList) {
         ServiceResponse serviceResponse = cartService.updateQuantities();
         addErrorMessageToModelIfExist(model, serviceResponse);
         return MVC_VIEW_NAME;
     }
 
-    @PostMapping(value = "/formAction", params = "addDiscount")
+    @PostMapping(params = "addDiscount")
     public String addDiscount(Model model, @ModelAttribute("cartInfoList") CartInfoList cartInfoList) {
         ServiceResponse serviceResponse = cartService.addDiscount();
         addErrorMessageToModelIfExist(model, serviceResponse);
         return MVC_VIEW_NAME;
     }
 
-    @PostMapping(value = "/formAction", params = "removeDiscount")
+    @PostMapping(params = "removeDiscount")
     public String removeDiscount(Model model, @ModelAttribute("cartInfoList") CartInfoList cartInfoList) {
         cartService.removeDiscount();
         return MVC_VIEW_NAME;
     }
 
-    @PostMapping(value = "/formAction", params = "completeOrder")
+    @PostMapping(params = "completeOrder")
     public String completeOrder(Model model, @ModelAttribute("cartInfoList") CartInfoList cartInfoList) {
         ServiceResponse<OrderInfo> serviceResponse = cartService.completeOrder();
         return "redirect:/api/v1/orderList";
