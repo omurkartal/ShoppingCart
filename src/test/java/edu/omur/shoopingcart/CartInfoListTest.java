@@ -20,9 +20,9 @@ public class CartInfoListTest {
     public void init() {
         // total amount is 100
         CartInfo cartInfo1 = new CartInfo(new Product("code1", "name1", 10, "code1"));
-        cartInfo1.setQuantity(2);
+        cartInfo1.setQuantity(1);
         CartInfo cartInfo2 = new CartInfo(new Product("code2", "name2", 20, "code2"));
-        cartInfo2.setQuantity(4);
+        cartInfo2.setQuantity(2);
         List<CartInfo> cartList = new ArrayList<>();
         cartList.add(cartInfo1);
         cartList.add(cartInfo2);
@@ -34,7 +34,7 @@ public class CartInfoListTest {
     @Test
     public void testCartInfoListWithDiscount() {
         System.out.println(cartInfoList.toString());
-        assertEquals(100, cartInfoList.getTotalAmount());
+        assertEquals(50, cartInfoList.getTotalAmount());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class CartInfoListTest {
         cartInfoList.setDiscountId("discount1");
         cartInfoList.setDiscountRatio((short) 10);
         System.out.println(cartInfoList.toString());
-        assertEquals(90, cartInfoList.getTotalAmount());
+        assertEquals(45, cartInfoList.getTotalAmount());
     }
 
     @Test
@@ -50,6 +50,6 @@ public class CartInfoListTest {
         cartInfoList.setDiscountId("discount1");
         cartInfoList.setDiscountRatio((short) 20);
         System.out.println(cartInfoList.toString());
-        assertEquals(80, cartInfoList.getTotalAmount());
+        assertEquals(40, cartInfoList.getTotalAmount());
     }
 }
